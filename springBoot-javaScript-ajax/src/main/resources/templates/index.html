@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<script src="jquery-3.6.0.min.js">
+	</script>
+	<script>
+		$(document).ready(function () {
+
+			$("#country").change(function () {
+				var countryName = $("#country").val();
+				$.ajax({
+					url: "selectStates",
+					type: "POST",
+					dataType: "json",
+					data: {
+						country: countryName,
+					},
+					success: function (response) {
+						//alert(response);
+						//$("#myCountry").text(response);
+
+					/*	alert(response.length);
+						for (var i = 0; i < response.length; i++) {
+							//alert(response[i]);
+							$("#myCountry").append(response[i]);
+						} */
+						
+						$.each(response, function(index, response){
+							$("#myCountry").append(response);                    //json
+						})
+					},
+					error: function (jq, status, error) {
+						alert(status);
+					}
+				})
+				$("#myCountry").empty();
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		function deleteEmployee(id) {
+			document.location.href = "delete?id=" + id;
+		}
+	</script>
+</head>
+
+<body>
+	<div th:text="${id}"></div>
+	<input type="hidden" id="myId" th:text="${id}">
+	<a href="#" th:onclick=" 'javascript:deleteEmployee(\'' + ${id} + '\')' ">Delete</a>
+
+	<br>
+
+	<select id="country">
+		<option>Select</option>
+		<option value="India">India</option>
+		<option value="Us">US</option>
+		<option value="Uk">UK</option>
+	</select>
+
+	<div id="myCountry"></div>
+
+</body>
+
+</html>
